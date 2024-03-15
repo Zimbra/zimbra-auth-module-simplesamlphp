@@ -108,6 +108,12 @@ your Zimbra server. This guide will assume you store your cert in `/tmp/idpcert.
 
 ### Set up Zimbra
 
+Create the config directory using:
+
+```
+mkdir -p /opt/zimbra/conf/saml
+```
+
 Add the file `/opt/zimbra/conf/saml/saml-config.properties` to configure SAML in Zimbra add the contents:
 
 ```
@@ -226,6 +232,14 @@ If all goes well, you should now be logged-on to Zimbra. You can change the defa
 
 ```
 zmprov md example.com zimbraWebClientLoginURL https://saml.example.com/simplesaml/saml2/idp/SSOService.php?spentityid=https://zimbra.example.com/service/extension/samlreceiver
+```
+
+### Disable authentication fallback
+
+By default Zimbra will also try to log-in using credentials from Zimbra LDAP, if you have SAML working, you should disable this fallback.
+
+```
+zmprov md example.com zimbraAuthFallbackToLocal FALSE   #replace example.com with your domain!
 ```
 
 ### Further reading

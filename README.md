@@ -59,3 +59,11 @@ $metadata['https://your-saml-server.example.com/simplesaml/saml2/idp/metadata.ph
    'auth' => 'zimbra',
 ];
 ```
+
+### Disable authentication fallback
+
+By default Zimbra will also try to log-in using credentials from Zimbra LDAP, if you have SAML working, you should disable this fallback.
+
+```
+zmprov md example.com zimbraAuthFallbackToLocal FALSE   #replace example.com with your domain!
+```
