@@ -83,23 +83,26 @@ Again you can test authentication at https://saml.example.com/simplesaml/module.
 
 ## Set up Zimbra SP in SimpleSAMLphp
 
-In SAML terms applications are called Service Providers or SP's. The service that provides your user database and takes care of your authentication is in SAML terms called Identity Provider or IDP. Usually you only have one IDP and as many SP's as you have applications. In this example we will set-up Zimbra as a SAML SP and use SimpleSAMLphp as IDP. This is the configuration needed on SimpleSAMLphp (in `/etc/simplesamlphp/metadata/saml20-sp-remote.php`):
+In SAML terms applications are called Service Providers or SP's. The service that provides your user database and takes care of your authentication is in SAML terms called Identity Provider or IDP. Usually you only have one IDP and as many SP's as you have applications. In this example we will set-up Zimbra as a SAML SP and use SimpleSAMLphp as IDP. This is the configuration needed on SimpleSAMLphp (in `/etc/simplesamlphp/metadata/saml20-sp-remote.php`). If this is your first SP don't forget the `<?php`:
 
 
 ```
+<?php
 $metadata['https://zimbra.example.com/service/extension/samlreceiver'] = array(
+    'entityid' => 'https://zimbra.example.com/service/extension/samlreceiver',
+    'metadata-set' => 'saml20-sp-remote',
     'simplesaml.attributes'     => true,
-       'debug' => TRUE,
-        'AssertionConsumerService' => 'https://zimbra.example.com/service/extension/samlreceiver',
-        'SingleLogoutService' => 'https://zimbra.example.com/service/extension/samlslo',
-        'NameIDFormat' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
-           'authproc' => array (
-                   10 => array(
-                 'class' => 'saml:AttributeNameID',
-                 'identifyingAttribute' => 'mail',
-                 'Format' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
-              ),
-           )
+    'debug' => TRUE,
+    'AssertionConsumerService' => 'https://zimbra.example.com/service/extension/samlreceiver',
+    'SingleLogoutService' => 'https://zimbra.example.com/service/extension/samlslo',
+    'NameIDFormat' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+       'authproc' => array (
+             10 => array(
+             'class' => 'saml:AttributeNameID',
+             'identifyingAttribute' => 'mail',
+             'Format' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+          ),
+       )
 );
 ```
 
