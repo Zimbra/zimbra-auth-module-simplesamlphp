@@ -101,7 +101,11 @@ class ZimbraAuth extends UserPassBase
       ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
       ldap_set_option($ds, LDAP_OPT_NETWORK_TIMEOUT, 10);
       $uid = ldap_escape(explode("@",$username)[0], "", LDAP_ESCAPE_FILTER);
-      $domain = ldap_escape(explode("@",$username)[1], "", LDAP_ESCAPE_FILTER);
+      $domain = @ldap_escape(explode("@",$username)[1], "", LDAP_ESCAPE_FILTER);
+
+      if(empty($domain)) {
+         return false;
+      }
 
       $ou = "ou=people,dc=".str_replace(".",",dc=",$domain);
       $dn = "uid=".$uid.",".$ou;
@@ -126,8 +130,8 @@ class ZimbraAuth extends UserPassBase
                return [
                   'ou' => [$ou],
                   'dn' => [$dn],
-                  'sn' => [$info[0]['sn'][0]],
-                  'givenname' => [$info[0]['givenname'][0]],
+                  'sn' => @[$info[0]['sn'][0]],
+                  'givenname' => @[$info[0]['givenname'][0]],
                   'mail' => [$info[0]['mail'][0]],
                   'uid' => [$info[0]['uid'][0]]
                ];
