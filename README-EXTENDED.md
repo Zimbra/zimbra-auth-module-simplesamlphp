@@ -88,22 +88,31 @@ In SAML terms applications are called Service Providers or SP's. The service tha
 
 ```
 <?php
-$metadata['https://zimbra.example.com/service/extension/samlreceiver'] = array(
-    'entityid' => 'https://zimbra.example.com/service/extension/samlreceiver',
-    'metadata-set' => 'saml20-sp-remote',
+$metadata['https://zimbra.example.com/service/extension/samlreceiver'] = [
     'simplesaml.attributes'     => true,
-    'debug' => TRUE,
-    'AssertionConsumerService' => 'https://zimbra.example.com/service/extension/samlreceiver',
-    'SingleLogoutService' => 'https://zimbra.example.com/service/extension/samlslo',
+    'AssertionConsumerService' => [
+        [
+            'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+            'Location' => 'https://zimbra.example.com/service/extension/samlreceiver',
+            'index' => 0,
+            'isDefault' => true,
+        ],
+    ],
+    'SingleLogoutService' => [
+        [
+            'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+            'Location' => 'https://zimbra.example.com/service/extension/samlslo',
+        ],
+    ],
     'NameIDFormat' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
        'authproc' => array (
-             10 => array(
+          10 => array(
              'class' => 'saml:AttributeNameID',
-             'identifyingAttribute' => 'mail',
-             'Format' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+              'identifyingAttribute' => 'mail',
+              'Format' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
           ),
        )
-);
+];
 ```
 
 You will also need to get the X.509 public certificate that is used for signing the SAML request from th IDP to Zimbra. You will need to download it and save it on 
