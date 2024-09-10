@@ -90,6 +90,8 @@ In SAML terms applications are called Service Providers or SP's. The service tha
 <?php
 $metadata['https://zimbra.example.com/service/extension/samlreceiver'] = [
     'simplesaml.attributes'     => true,
+    'metadata-set' => 'saml20-sp-remote',
+    'debug' => TRUE,
     'AssertionConsumerService' => [
         [
             'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
